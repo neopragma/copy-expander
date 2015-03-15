@@ -23,7 +23,7 @@ MSG      DFHMDF LENGTH=20,POS=(7,1),ATTRB=(ASKIP,NORM)
          DFHMSD TYPE=FINAL
 ```
 
-run ```dfhmdf`` as a command-line utility:
+run ```dfhmdf``` as a command-line utility:
 
 ```sh
 dfhmdf macro-source > target-file
