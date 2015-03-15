@@ -10,18 +10,18 @@ Given a BMS macro source file named ```macro-source``` with the following conten
 QCKSET   DFHMSD TYPE=MAP,STORAGE=AUTO,MODE=OUT,LANG=COBOL,TIOAPFX=YES
 QCKMAP   DFHMDI SIZE=(24,80),LINE=1,COLUMN=1,CTRL=ALARM
          DFHMDF POS=(1,1),LENGTH=3,ATTRB=(ASKIP,BRT),INITIAL='QCK'
-         DFHMDF POS=(1,26),LENGTH=28,ATTRB=(ASKIP,NORM),                X
+TITLE    DFHMDF POS=(1,26),LENGTH=28,ATTRB=(ASKIP,NORM),                X
               INITIAL='Quick Customer Account Check'
-         DFHMDF POS=(3,1),LENGTH=8,ATTRB=(ASKIP,NORM),INITIAL='Account:'
+HEAD     DFHMDF POS=(3,1),LENGTH=8,ATTRB=(ASKIP,NORM),INITIAL='Account:'
 ACCTNO   DFHMDF POS=(3,13),LENGTH=7,ATTRB=(ASKIP,NORM)
          DFHMDF POS=(4,1),LENGTH=5,ATTRB=(ASKIP,NORM),INITIAL='Name:'
 SURNAME  DFHMDF POS=(4,13),LENGTH=15,ATTRB=(ASKIP,NORM)
 FNAME    DFHMDF POS=(4,30),LENGTH=10,ATTRB=(ASKIP,NORM)
-         DFHMDF POS=(5,1),LENGTH=11,ATTRB=(ASKIP,NORM),INITIAL='Max charge:'
+         DFHMDF POS=(5,1),LENGTH=11,ATTRB=(ASKIP,NORM),                 X
+             INITIAL='Max charge:'                                
 CHG      DFHMDF POS=(5,13),ATTRB=(ASKIP,NORM),PICOUT='$,$$0.00'
 MSG      DFHMDF LENGTH=20,POS=(7,1),ATTRB=(ASKIP,NORM)
-         DFHMSD TYPE=FINAL
-```
+         DFHMSD TYPE=FINAL```
 
 run ```dfhmdf``` as a command-line utility:
 
@@ -32,11 +32,15 @@ dfhmdf macro-source > target-file
 to produce the following output:
 
 ```ruby
-  text_field(:acctno, 4, 13, 7)
-  text_field(:surname, 5, 13, 15)
-  text_field(:fname, 5, 30, 10)
-  text_field(:chg, 6, 13, 8)
-  text_field(:msg, 8, 1, 20)
+text_field(:x2y1, 2, 1, 3)
+text_field(:title, 2, 26, 28)
+text_field(:head, 4, 1, 8)
+text_field(:x5y1, 5, 1, 5)
+text_field(:surname, 5, 13, 15)
+text_field(:fname, 5, 30, 10)
+text_field(:x6y1, 6, 1, 11)
+text_field(:chg, 6, 13, 8)
+text_field(:msg, 8, 1, 20)
 ```
 
 From the example you may surmise:
