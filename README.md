@@ -4,7 +4,7 @@ Converts DFHMDF macro specifications into ```text_field``` definitions for use w
 
 ## Example
 
-Given a DFH macro source file named ```myscreen.txt``` with the following contents:
+Given a BMS macro source file named ```myscreen.txt``` with the following contents:
 
 ```
 QCKSET   DFHMSD TYPE=MAP,STORAGE=AUTO,MODE=OUT,LANG=COBOL,TIOAPFX=YES
@@ -26,7 +26,7 @@ MSG      DFHMDF LENGTH=20,POS=(7,1),ATTRB=(ASKIP,NORM)
 run ```dfhmdf`` as a command-line utility:
 
 ```sh
-ruby dfhmdf.rb myscreen.txt
+dfhmdf macro-source > target-file
 ```
 
 to produce the following output:
