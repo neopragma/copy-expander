@@ -21,7 +21,8 @@ FNAME    DFHMDF POS=(4,30),LENGTH=10,ATTRB=(ASKIP,NORM)
              INITIAL='Max charge:'                                
 CHG      DFHMDF POS=(5,13),ATTRB=(ASKIP,NORM),PICOUT='$,$$0.00'
 MSG      DFHMDF LENGTH=20,POS=(7,1),ATTRB=(ASKIP,NORM)
-         DFHMSD TYPE=FINAL```
+         DFHMSD TYPE=FINAL
+```
 
 run ```dfhmdf``` as a command-line utility:
 
