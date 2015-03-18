@@ -1,21 +1,27 @@
 module Dfhmdf  
 
+  # Generate a te3270 text_field declaration using values parsed from a DFHMDF macro.
   def te3270_text_field
     "text_field(:#{field_label}, #{x_coordinate}, #{y_coordinate}, #{field_length})" 
   end  
 
+  # Clear variables to prepare for parsing a DFHMDF macro.
   def clear
     @field_label, @parameter_hash, @parameters, @tokens = nil
     @dfhmdf = false
   end
 
+
+  # Tokenize an input line from the macro source file. 
+  #
+  # LABEL MACRO OPERAND,OPERAND,OPERAND COMMENT X
+  # 1     2     3                       4       discard
   def tokenize_line input_line
-
-# Want to split on spaces except when space occurs within single quotes.    
-# Should be able to do it with a regex. Unable to figure it out so far. Using brute force.
-# This regex doesn't work but was as close as I was able to get.
-#    @tokens = [@tokens, input_line.scan(/'.*?'|".*?"|\S+/)].compact.reduce([], :|)
-
+    # Want to split on spaces except when space occurs within single quotes.    
+    # Should be able to do it with a regex. Unable to figure it out so far. Using brute force.
+    # This regex doesn't work but was as close as I was able to get.
+    #    @tokens = [@tokens, input_line.scan(/'.*?'|".*?"|\S+/)].compact.reduce([], :|)
+    # +input_line+:: A line of input from the macro source file.
     new_tokens = []
     temp = input_line.split
     for i in 0..temp.length-1 do
@@ -36,6 +42,10 @@ module Dfhmdf
     @tokens = [@tokens, new_tokens].compact.reduce([], :|)
   end  
 
+
+  # Look at the tokens that were extracted from an input line and determine whether
+  # we are reading a DFHMDF macro. There may or may not be a label (1st token).
+  # +tokens+:: array of tokens extracted from the current input line
   def parse_tokens tokens
     @dfhmdf = false
     if tokens[0] == 'DFHMDF'
@@ -53,8 +63,6 @@ module Dfhmdf
   end  
 
 
-  def parse_operands operands_as_string
-  #-----------------------------------------------------------------------------
   # Parse the operands in a macro source statement:
   #
   # LABEL MACRO OPERAND,OPERAND,OPERAND COMMENT X
@@ -68,13 +76,12 @@ module Dfhmdf
   # to this...
   # { :pos => [ "6", "18" ], :length => "14", :attrb => [ "ASKIP", "NORM" ], 
   #   :initial => "Hello there" }
-  #-----------------------------------------------------------------------------
+  # +operands_as_string+:: The DFHMDF operands as a single string.
+  def parse_operands operands_as_string
     @operands_hash = {}
-
     # Split on comma except when the comma appears within parentheses.
-    # Couldn't figure out how to make it ignore commas within single quotes,
+    # Couldn't figure out how to make regex ignore commas within single quotes,
     # so it misses PICOUT='$,$$0.00' and similar. Using brute force to handle it.
-
     item = operands_as_string.split(/,(?![^(]*\))/)
     for i in 0..item.length-1
       if item[i].match(/^PICOUT=/)
@@ -101,24 +108,39 @@ module Dfhmdf
     @operands_hash
   end  
 
+  
+  # Return the X coordinate of the field as specified in the POS=(x,y) operand of DFHMDF. 
+  # Bump the offset by one to account for the 3270 attribute byte. If the X coordinate 
+  # value hasn't been set, return zero.
   def x_coordinate
     (@operands_hash != nil && @operands_hash[:pos] && @operands_hash[:pos][0].to_i + 1) || 0
   end  
 
+
+  # Return the Y coordinate of the field as specified in the POS=(x,y) operand of DFHMDF.
+  # If the Y coordinate value hasn't been set, return zero.
   def y_coordinate
     (@operands_hash != nil && @operands_hash[:pos] && @operands_hash[:pos][1].to_i) || 0
   end  
 
+
+  # Return the length of the field. This may be specified in the LENGTH= operand of DFHMDF or
+  # derived from the PICOUT= or INTIAL= operand.
   def field_length
     (@operands_hash != nil && @operands_hash[:length] && @operands_hash[:length].to_i) ||
     (@operands_hash != nil && @operands_hash[:initial] && @operands_hash[:initial].length) ||
     (@operands_hash != nil && @operands_hash[:picout] && @operands_hash[:picout].length) || 0
   end  
 
+
+  # Return the field label (name) as specified on the DFHMDF macro. When no label is coded on
+  # the macro, build a name based on the X and Y coordinates, like x20y5 or x9y32.
   def field_label
     (@field_label == nil && "x#{x_coordinate}y#{y_coordinate}") || @field_label
   end
 
+
+  # True if we are looking at a DFHMDF macro in the input.
   def dfhmdf?
     @dfhmdf
   end    
