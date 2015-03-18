@@ -55,31 +55,23 @@ describe ScreenDef do
         @screen_def.parse_tokens([ 'DFHMDF', 'POS=(4,5),LENGTH=15', 'baz' ])
         expect(@screen_def.dfhmdf?).to be(true)
       end
-    end
 
-    describe "#parse_tokens" do
       it "clears the previous value of field label when none is specified" do
         @screen_def.field_label = 'aardvaark'
         @screen_def.parse_tokens([ 'DFHMDF', 'foo', 'bar' ])
         expect(@screen_def.field_label).to eql('x0y0')
       end
-    end
 
-    describe "#parse_tokens" do
       it "recognizes a DFHMDF macro with a label" do
         @screen_def.parse_tokens([ 'FIELDNAME', 'DFHMDF', 'POS=(4,5),LENGTH=15', 'bar' ])
         expect(@screen_def.dfhmdf?).to be(true)
       end
-    end
 
-    describe "#parse_tokens" do
       it "populates the field label when one is specified" do
         @screen_def.parse_tokens([ 'FIELDNAME', 'DFHMDF', 'POS=(4,5),LENGTH=15', 'bar' ])
         expect(@screen_def.field_label).to eq('fieldname')
       end
-    end
 
-    describe "#parse_tokens" do
       it "ignores source lines that do not contain a DFHMDF macro" do
         @screen_def.parse_tokens [ 'foo', 'bar', 'DFHMDF', 'baz' ]
         expect(@screen_def.dfhmdf?).to eq(false)
