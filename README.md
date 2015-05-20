@@ -1,6 +1,6 @@
 # dfhmdf
 
-Converts DFHMDF macro specifications into ```text_field``` definitions for use with the (https://github.com/cheezy/te3270/)[TE3270 gem]. The purpose is to eliminate the need for you to count the characters across and down a 3270 screen to determine the X and Y coordinates and the length of each field you wish to define for TE3270.
+Converts DFHMDF macro specifications into ```text_field``` definitions for use with the [TE3270 gem](https://github.com/cheezy/te3270/). The purpose is to eliminate the need for you to count the characters across and down a 3270 screen to determine the X and Y coordinates and the length of each field you wish to define for TE3270.
 
 ## Example
 
