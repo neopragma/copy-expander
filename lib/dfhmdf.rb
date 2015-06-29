@@ -22,26 +22,35 @@ module Dfhmdf
     # This regex doesn't work but was as close as I was able to get.
     #    @tokens = [@tokens, input_line.scan(/'.*?'|".*?"|\S+/)].compact.reduce([], :|)
     # +input_line+:: A line of input from the macro source file.
+
     new_tokens = []
     temp = input_line.split
+    new_tokens[0] = temp[0]
+    if temp[0] == 'DFHMDF'
+      start_ix = 1
+    else
+      start_ix = 2
+      new_tokens[1] = temp[1]
+    end    
+    temp = input_line.split(' ')
+    open_quote = false
     for i in 0..temp.length-1 do
       if temp[i] != nil
-        if temp[i].include? "'"
-          temp[i] << ' ' << temp[i+1] unless temp[i+1] == nil
-          temp[i + 1] = nil
-          if new_tokens[i] == nil
-            new_tokens[i] = temp[i]
-          else  
-            new_tokens[i] << temp[i]
-          end   
-        else
-          new_tokens << temp[i]
+        open_quote = true unless temp[i].count("'") % 2 == 0
+        while open_quote
+          if temp[i+1] != nil
+            temp[i] << ' ' << temp[i+1]
+            temp[i+1] = nil
+            temp.compact!
+            open_quote = false if temp[i].count("'") % 2 == 0
+          else
+            open_quote = false  
+          end  
         end  
-      end    
-    end
-    @tokens = [@tokens, new_tokens].compact.reduce([], :|)
+      end
+    end  
+    @tokens = [@tokens, temp].compact.reduce([], :|)
   end  
-
 
   # Look at the tokens that were extracted from an input line and determine whether
   # we are reading a DFHMDF macro. There may or may not be a label (1st token).
@@ -61,7 +70,6 @@ module Dfhmdf
       parse_operands operands
     end  
   end  
-
 
   # Parse the operands in a macro source statement:
   #

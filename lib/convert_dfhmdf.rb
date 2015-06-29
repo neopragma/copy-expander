@@ -32,13 +32,9 @@ class ConvertDfhmdf
     @macro_source
   end
 
-  def process_macro dfhmdf_macro
-    parse_tokens tokenize_line dfhmdf_macro
-  end  
-
   def squish str
     str[71] = ' ' unless str.length < 72
-    str.split.join(' ')
+    str[0..70].split.join(' ')
   end  
 
   def macro_source

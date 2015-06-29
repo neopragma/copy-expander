@@ -43,8 +43,13 @@ describe ScreenDef do
       end
 
       it "splits properly when the last operand is a quoted string with a space" do
-        expect(@screen_def.tokenize_line("abc de,'fg hi',jkl"))
-          .to eq([ "abc", "de,'fg hi',jkl" ])
+        expect(@screen_def.tokenize_line("abc de,fghi,'jkl mnop'"))
+          .to eq([ "abc", "de,fghi,'jkl mnop'" ])
+      end
+
+      it "splits properly when an operand has multiple embedded spaces" do
+        expect(@screen_def.tokenize_line("abc de,'fg hi jk',lmn"))
+          .to eq([ "abc", "de,'fg hi jk',lmn" ])
       end
     end
   end    
@@ -96,8 +101,13 @@ describe ScreenDef do
           .to eq({ :key1 => [ "one", "two" ], :key2 => [ "three", "four" ] })
       end
 
-      it "handles a mix of operand formats" do
+      it "handles operands in the order pos, length, attrb, initial" do
         expect(@screen_def.parse_operands("POS=(6,18),LENGTH=14,ATTRB=(ASKIP,NORM),INITIAL='Hello there'"))
+          .to eq({ :pos => [ "6", "18" ], :length => "14", :attrb => [ "ASKIP", "NORM" ], :initial => "Hello there" })
+      end
+
+      it "handles operands in the order length, attrb, initial, pos" do
+        expect(@screen_def.parse_operands("LENGTH=14,ATTRB=(ASKIP,NORM),INITIAL='Hello there',POS=(6,18)"))
           .to eq({ :pos => [ "6", "18" ], :length => "14", :attrb => [ "ASKIP", "NORM" ], :initial => "Hello there" })
       end
     end    

@@ -32,7 +32,7 @@ describe ConvertDfhmdf do
       expect(@screen_def.macro_source).to eq('SURNAME DFHMDF POS=(4,13),LENGTH=15,ATTRB=(ASKIP,NORM)')
     end
 
-    it "stores macro source coded on multiple lines" do
+    it "stores macro source coded on multiple lines, POS first" do
       allow(@screen_def).to receive(:read_line).and_return(
 #                 1         2         3         4         5         6         7         8           
 #        12345678901234567890123456789012345678901234567890123456789012345678901234567890      
@@ -43,6 +43,19 @@ describe ConvertDfhmdf do
       @screen_def.ingest_macro
       expect(@screen_def.macro_source)
         .to eq('SURNAME DFHMDF POS=(4,13),LENGTH=15,ATTRB=(ASKIP,NORM),INITIAL=\'Name here\'')
+    end  
+
+    it "stores macro source coded on multiple lines, INITIAL first" do
+      allow(@screen_def).to receive(:read_line).and_return(
+#                 1         2         3         4         5         6         7         8           
+#        12345678901234567890123456789012345678901234567890123456789012345678901234567890      
+        'SURNAME  DFHMDF INITIAL=\'Name here\',                                   X',
+        '                LENGTH=15,                                             X',
+        '                ATTRB=(ASKIP,NORM),                                    X',
+        '                POS=(4,13)')
+      @screen_def.ingest_macro
+      expect(@screen_def.macro_source)
+        .to eq('SURNAME DFHMDF INITIAL=\'Name here\',LENGTH=15,ATTRB=(ASKIP,NORM),POS=(4,13)')
     end  
   end  
 
