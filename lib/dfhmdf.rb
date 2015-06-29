@@ -2,7 +2,7 @@ module Dfhmdf
 
   # Generate a te3270 text_field declaration using values parsed from a DFHMDF macro.
   def te3270_text_field
-    "text_field(:#{field_label}, #{x_coordinate}, #{y_coordinate}, #{field_length})" 
+    "text_field(:#{field_label}, #{line_position}, #{column_position}, #{field_length})" 
   end  
 
   # Clear variables to prepare for parsing a DFHMDF macro.
@@ -117,18 +117,18 @@ module Dfhmdf
   end  
 
   
-  # Return the X coordinate of the field as specified in the POS=(x,y) operand of DFHMDF. 
-  # Bump the offset by one to account for the 3270 attribute byte. If the X coordinate 
-  # value hasn't been set, return zero.
-  def x_coordinate
-    (@operands_hash != nil && @operands_hash[:pos] && @operands_hash[:pos][0].to_i + 1) || 0
+  # Return the line position of the field as specified in the POS=(line, column) operand of DFHMDF. 
+  # If the position has not been set, return zero.
+  def line_position
+    (@operands_hash != nil && @operands_hash[:pos] && @operands_hash[:pos][0].to_i) || 0
   end  
 
 
-  # Return the Y coordinate of the field as specified in the POS=(x,y) operand of DFHMDF.
-  # If the Y coordinate value hasn't been set, return zero.
-  def y_coordinate
-    (@operands_hash != nil && @operands_hash[:pos] && @operands_hash[:pos][1].to_i) || 0
+  # Return the column position of the field as specified in the POS=(row, column) operand of DFHMDF.
+  # Increment the value by 1 to bypass the attribute byte.
+  # If the value has not been set, return zero.
+  def column_position 
+    (@operands_hash != nil && @operands_hash[:pos] && @operands_hash[:pos][1].to_i + 1) || 0
   end  
 
 
@@ -144,7 +144,7 @@ module Dfhmdf
   # Return the field label (name) as specified on the DFHMDF macro. When no label is coded on
   # the macro, build a name based on the X and Y coordinates, like x20y5 or x9y32.
   def field_label
-    (@field_label == nil && "x#{x_coordinate}y#{y_coordinate}") || @field_label
+    (@field_label == nil && "x#{line_position}y#{column_position}") || @field_label
   end
 
 

@@ -33,15 +33,15 @@ dfhmdf macro-source > target-file
 to produce the following output:
 
 ```ruby
-text_field(:x2y1, 2, 1, 3)
-text_field(:title, 2, 26, 28)
-text_field(:head, 4, 1, 8)
-text_field(:x5y1, 5, 1, 5)
-text_field(:surname, 5, 13, 15)
-text_field(:fname, 5, 30, 10)
-text_field(:x6y1, 6, 1, 11)
-text_field(:chg, 6, 13, 8)
-text_field(:msg, 8, 1, 20)
+text_field(:x2y1, 1, 2, 3)
+text_field(:title, 1, 27, 28)
+text_field(:head, 3, 2, 8)
+text_field(:x5y1, 4, 2, 5)
+text_field(:surname, 4, 14, 15)
+text_field(:fname, 4, 31, 10)
+text_field(:x6y1, 5, 2, 11)
+text_field(:chg, 5, 14, 8)
+text_field(:msg, 7, 2, 20)
 ```
 
 From the example you may surmise:

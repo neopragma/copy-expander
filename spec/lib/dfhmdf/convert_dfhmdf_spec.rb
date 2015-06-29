@@ -11,16 +11,16 @@ describe ConvertDfhmdf do
       @screen_def.process_macro 'SURNAME  DFHMDF POS=(4,13),LENGTH=15,ATTRB=(ASKIP,NORM)'
       expect(@screen_def.dfhmdf?).to be(true)
       expect(@screen_def.field_label).to eq('surname')
-      expect(@screen_def.x_coordinate).to eq(5)
-      expect(@screen_def.y_coordinate).to eq(13)
+      expect(@screen_def.line_position).to eq(4)
+      expect(@screen_def.column_position).to eq(14)
       expect(@screen_def.field_length).to eq(15)
     end    
     it "ignores macros other than DFHMDF" do
       @screen_def.process_macro 'QCKSET   DFHMSD TYPE=MAP,STORAGE=AUTO,MODE=OUT,LANG=COBOL,TIOAPFX=YES'
       expect(@screen_def.dfhmdf?).to be(false)
       expect(@screen_def.field_label).to eq('x0y0')
-      expect(@screen_def.x_coordinate).to eq(0)
-      expect(@screen_def.y_coordinate).to eq(0)
+      expect(@screen_def.line_position).to eq(0)
+      expect(@screen_def.column_position).to eq(0)
       expect(@screen_def.field_length).to eq(0)
     end  
   end  

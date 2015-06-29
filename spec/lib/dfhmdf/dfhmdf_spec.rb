@@ -25,8 +25,8 @@ describe ScreenDef do
       expect(@screen_def.dfhmdf?).to be(false)
       expect(@screen_def.field_length).to eq(0)
       expect(@screen_def.field_label).to eq('x0y0')
-      expect(@screen_def.x_coordinate).to eq(0)
-      expect(@screen_def.y_coordinate).to eq(0)
+      expect(@screen_def.line_position).to eq(0)
+      expect(@screen_def.column_position).to eq(0)
     end    
   end  
 
@@ -120,44 +120,44 @@ describe ScreenDef do
         expect(@screen_def.field_label).to eq('NAME')  
       end  
 
-      it "derives a field label based on x and y coordinates when no label was specified" do
+      it "derives a field label based on line and column positions when no label was specified" do
         @screen_def.field_label = nil
         @screen_def.operands_hash( { :pos => [ "5", "18" ] })
-        expect(@screen_def.field_label).to eq('x6y18')  
+        expect(@screen_def.field_label).to eq('x5y19')  
       end  
     end    
   end  
 
   context "determining field position" do
-    describe "#x_coordinate" do
-      it "returns 0 as the x coordinate if the position has not been determined" do
-        expect(@screen_def.x_coordinate).to eq(0)
+    describe "#line_position" do
+      it "returns 0 as the line if the position has not been determined" do
+        expect(@screen_def.line_position).to eq(0)
       end  
 
-      it "returns 0 as the x coordinate if POS=(x,y) was not specified" do
+      it "returns 0 as the line if POS=(line,column)) was not specified" do
         @screen_def.operands_hash( { :foo => "bar" } )
-        expect(@screen_def.x_coordinate).to eq(0)
+        expect(@screen_def.line_position).to eq(0)
       end  
 
-      it "calculates the x coordinate value skipping the attribute byte" do
+      it "calculates the column position value skipping the attribute byte" do
         @screen_def.operands_hash( { :pos => ["5", "28"] } )
-        expect(@screen_def.x_coordinate).to eq(6)
+        expect(@screen_def.line_position).to eq(5)
       end
     end
 
-    describe "#y_coordinate" do
+    describe "#column_position" do
       it "returns 0 as the y coordinate if the position has not been determined" do
-        expect(@screen_def.y_coordinate).to eq(0)
+        expect(@screen_def.column_position).to eq(0)
       end  
 
-      it "returns 0 as the y coordinate if POS=(x,y) was not specified" do
+      it "returns 0 as the column position if POS=(line,column)) was not specified" do
         @screen_def.operands_hash( { :foo => "bar" } )
-        expect(@screen_def.y_coordinate).to eq(0)
+        expect(@screen_def.column_position).to eq(0)
       end  
 
-      it "returns the y coordinate value from the POS=(x,y) parameter" do
+      it "returns the column position value from the POS=(line,column)) parameter" do
         @screen_def.operands_hash( { :pos => ["5", "28"] } )
-        expect(@screen_def.y_coordinate).to eq(28)
+        expect(@screen_def.column_position).to eq(29)
       end
     end
   end  
@@ -191,19 +191,19 @@ describe ScreenDef do
     it "generates a text_field definition for a field with a LENGTH= specification" do
       @screen_def.field_label = 'myfield'
       @screen_def.operands_hash({ :pos => [ "23", "6" ], :length => "14" })  
-      expect(@screen_def.te3270_text_field).to eql('text_field(:myfield, 24, 6, 14)')
+      expect(@screen_def.te3270_text_field).to eql('text_field(:myfield, 23, 7, 14)')
     end
 
     it "generates a text_field definition for a field with a PICOUT= specification" do
       @screen_def.field_label = 'otherfld'
       @screen_def.operands_hash({ :pos => [ "8", "16" ], :picout => "$$,$$0.00" })  
-      expect(@screen_def.te3270_text_field).to eql('text_field(:otherfld, 9, 16, 9)')      
+      expect(@screen_def.te3270_text_field).to eql('text_field(:otherfld, 8, 17, 9)')      
     end    
 
     it "generates a text_field definition for a field with INITIAL= and no LENGTH=" do
       @screen_def.field_label = 'otherfld'
       @screen_def.operands_hash({ :pos => [ "8", "16" ], :initial => "Hello" })  
-      expect(@screen_def.te3270_text_field).to eql('text_field(:otherfld, 9, 16, 5)')      
+      expect(@screen_def.te3270_text_field).to eql('text_field(:otherfld, 8, 17, 5)')      
     end    
   end 
 
