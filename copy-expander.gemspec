@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'dfhmdf/version'
+require 'copy-expander/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "dfhmdf"
+  spec.name          = "copy-expander"
   spec.version       = Dfhmdf::VERSION
   spec.authors       = ["Dave Nicolette"]
   spec.email         = ["davenicolette@gmail.com"]
-  spec.summary       = %q{Interprets DFHMDF macros}
-  spec.description   = %q{Generate text_field specifications for te3270 based on DFHMDF source}
-  spec.homepage      = "http://github.com/neopragma/dfhmdf"
+  spec.summary       = %q{Expands nested COBOL COPY REPLACING statements}
+  spec.description   = %q{Expands nested COBOL COPY REPLACING statements}
+  spec.homepage      = "http://github.com/neopragma/copy-expander"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

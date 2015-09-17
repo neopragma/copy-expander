@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/expander'
+
+expander = Expander.new 
+expander.run
