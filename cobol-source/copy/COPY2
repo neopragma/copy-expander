@@ -1,0 +1,8 @@
+000010* Copybook with nested COPY statement                             AAAAAAAA
+000020 01  :PREFIX:-COPY2-GROUP.                                        AAAAAAAA
+000030     05  :PREFIX:-COPY2-ITEM1 PIC X.                              AAAAAAAA
+000040     05  :PREFIX:-COPY2-ITEM2 PIC X.                              AAAAAAAA
+000050     COPY COPY1 REPLACING ==:PREFIX:== BY ==TWO-DEEP==            AAAAAAAA
+000060 01  :PREFIX:-COPY2-GROUP2.                                       AAAAAAAA
+000070     05  :PREFIX:-COPY2-ITEM1 PIC X.                              AAAAAAAA
+000080     05  :PREFIX:-COPY2-ITEM2 PIC X.                              AAAAAAAA

@@ -1,1 +1,5 @@
 *.lock
+*.sublime-project
+*.sublime-workspace
+*~
+TEMP.CBL

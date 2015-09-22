@@ -1,0 +1,14 @@
+# snippets
+
+
+  ##
+  # Format a piece of COBOL source text as a fixed-length 80-character
+  # line with a six-digit line number in positions 1-6 and an arbitrary
+  # 8-character value in positions 73-80.
+  # The source text represents the contents of positions 7-72 of a line
+  # in a conventional COBOL source file.
+  #
+  def format_source_line line_number, text
+    first_six = '%6.6d' % line_number.to_s    
+    ('%-72.72s' % "#{first_six}#{text}") + "AAAAAAAA\n"
+  end  

@@ -1,0 +1,5 @@
+{
+  expanded_file: TEMP.CBL,
+  source_dir: cobol-source,
+  copy_dir: cobol-source/copy
+}

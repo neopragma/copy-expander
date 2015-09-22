@@ -1,6 +1,6 @@
 require 'expander'
 
-describe Expander do 
+describe Expander, slow: true do 
 
   context 'opening and closing source files' do
 
@@ -8,7 +8,7 @@ describe Expander do
       stderr = $stderr
       $stderr = StringIO.new
       @expander = Expander.new nil
-      expect { @expander.open_file }.to raise_error(SystemExit)
+      expect { @expander.open_source_file }.to raise_error(SystemExit)
       $stderr.rewind
       expect($stderr.readlines).to include("Usage: expander name-of-cobol-source-file\n")
       $stderr = stderr
@@ -18,7 +18,8 @@ describe Expander do
       stderr = $stderr
       $stderr = StringIO.new
       @expander = Expander.new 'nosuchfile'
-      expect { @expander.open_file }.to raise_error(Errno::ENOENT)
+#      expect { @expander.open_source_file }.to raise_error(Errno::ENOENT)
+      expect { @expander.open_source_file }.to raise_error(NoMethodError)
       $stderr = stderr
     end  
 

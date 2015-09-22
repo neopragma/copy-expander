@@ -1,0 +1,4 @@
+000010* Copybook with no nested COPY statements                         AAAAAAAA
+000020 01  :PREFIX:-COPY1A-GROUP.                                       AAAAAAAA
+000030     05  :PREFIX:-COPY1A-ITEM1 PIC X.                             AAAAAAAA
+000040     05  :PREFIX:-COPY1A-ITEM2 PIC X.                             AAAAAAAA
