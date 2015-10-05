@@ -25,18 +25,18 @@ class Expander
     init
     begin
       output_line = process read_line
-      write_from output_line
+      write_from output_line.to_s unless output_line == nil
     end while @eof == false
   end  
 
   def read_line
-    line = @source_file.readline
+    line = ('%-80.80s' % @source_file.readline.chomp)
     @eof = @source_file.eof?
     line
   end  
 
   def write_from line
-    @expanded_file.write line
+    @expanded_file.write ('%-80.80s' % line.chomp) + "\n"
   end  
 
   def eof?

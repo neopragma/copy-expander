@@ -16,4 +16,4 @@
 000130 PROCEDURE DIVISION.                                              AAAAAAAA
 000140     DISPLAY 'This program contains COPY statements 1 level deep.'AAAAAAAA
 000150     GOBACK                                                       AAAAAAAA
-000160    .                                                             AAAAAAAA
+000160     .                                                            AAAAAAAA

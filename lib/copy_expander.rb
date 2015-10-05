@@ -22,21 +22,29 @@ module CopyExpander
   # Expand COPY statement found on a single line of COBOL source code.
   #
   def process line
+    return line if blank? line
     return line if comment? line
     break_up_source_line line
     return line unless has_copy_statement?
     @copy_statement_count += 1
+    @depth = 0
     expand_copybook CopyStatement.new(@work_area)
+    nil
   end  
 
   ##
   # Recursively expand copybooks and replace tokens
   #
   def expand_copybook copy_statement
+    @depth += 1
+    if @depth > 8
+      puts "recursion depth is #{@depth}"
+      exit(1)
+    end  
     copybook = File.open("#{copy_dir}/#{copy_statement.copybook_name}", 'r')
     begin
-      line = copybook.readline
-      if comment? line
+      line = ('%-80.80s' % copybook.readline.chomp)
+      if blank?(line) || comment?(line)
         write_from line
       else
         break_up_source_line line
@@ -49,6 +57,7 @@ module CopyExpander
         end  
       end  
     end while copybook.eof? == false  
+    @depth -= 1
   end  
 
   ##
@@ -60,6 +69,13 @@ module CopyExpander
     line.length >=  6 ? @first_six_characters  = line[0..5]   : nil
     line.length >= 80 ? @last_eight_characters = line[72..79] : nil
     line.length >= 72 ? @work_area             = line[6..71]  : nil
+  end  
+
+  ##
+  # Is this line logically blank?
+  #
+  def blank? line
+    line == nil || line.gsub(/\s/, '').length == 0
   end  
 
   ##
@@ -81,7 +97,7 @@ module CopyExpander
   # Reconstruct the original source line.
   #
   def reconstruct_line
-    @first_six_characters + ('%-66.66s' % @work_area) + @last_eight_characters + "\n"
+    @first_six_characters + ('%-66.66s' % @work_area) + @last_eight_characters
   end  
 
   ##
@@ -96,7 +112,11 @@ module CopyExpander
   # Carry out token replacement in a source line per the REPLACING option
   #
   def replace_tokens line, copy_statement
-    line.gsub(copy_statement.old_value, copy_statement.new_value)
+    if copy_statement.old_value == nil || copy_statement.new_value == nil
+      line
+    else
+      line.gsub(copy_statement.old_value, copy_statement.new_value) unless copy_statement.old_value == nil
+    end
   end  
 
 end

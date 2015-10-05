@@ -14,4 +14,4 @@
 000140     DISPLAY 'This program contains COPY statements '             AAAAAAAA
 000150             '3 LEVELS DEEP.'                                     AAAAAAAA
 000160     GOBACK                                                       AAAAAAAA
-000170    .                                                             AAAAAAAA
+000170     .                                                            AAAAAAAA

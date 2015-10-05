@@ -116,14 +116,14 @@ describe CopyExpander do
       @work_area = '  something something'
       @first_six_characters = '123456'
       @last_eight_characters = 'abcdefgh'
-      expect(reconstruct_line).to eq('123456  something something' + ' '*40 + "     abcdefgh\n")
+      expect(reconstruct_line).to eq('123456  something something' + ' '*40 + "     abcdefgh")
     end  
 
     it 'reconstructs a source line as a comment line' do
       @work_area = '  something something'
       @first_six_characters = '123456'
       @last_eight_characters = 'abcdefgh'
-      expect(commentize(reconstruct_line)).to eq('123456* something something' + ' '*40 + "     abcdefgh\n")
+      expect(commentize(reconstruct_line)).to eq('123456* something something' + ' '*40 + "     abcdefgh")
     end  
 
   end  
