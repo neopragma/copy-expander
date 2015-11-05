@@ -66,6 +66,11 @@ module CopyExpander
   # line when we make text substitutions.
   #
   def break_up_source_line line
+    if line[70] == ' ' && line[71..72] != '  ' 
+      line[72..79] = line[71..78]
+      line[71] = ' '
+    end  
+
     line.length >=  6 ? @first_six_characters  = line[0..5]   : nil
     line.length >= 80 ? @last_eight_characters = line[72..79] : nil
     line.length >= 72 ? @work_area             = line[6..71]  : nil
@@ -75,6 +80,9 @@ module CopyExpander
   # Is this line logically blank?
   #
   def blank? line
+    if ! line.valid_encoding?
+      line = line.encode("UTF-16be", :invalid=>:replace, :replace=>" ").encode('UTF-8')
+    end
     line == nil || line.gsub(/\s/, '').length == 0
   end  
 
